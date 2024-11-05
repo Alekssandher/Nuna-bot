@@ -58,7 +58,7 @@ async function gerarCarteira(message) {
 client.on("interactionCreate", async interaction => {
   if (!interaction.isChatInputCommand()) return
 
-  if (interaction.commandName === "Hello") {
+  if (interaction.commandName === "hello") {
 
     await interaction.reply("Hello world")
 
