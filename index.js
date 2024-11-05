@@ -47,10 +47,16 @@ async function gerarCarteira(message) {
       const carteira = response.data; // Aqui, `carteira` é um objeto JSON
 
       // Responde com o endereço e outras informações, se necessário
-      message.reply(`Sua nova carteira de Bitcoin foi gerada com sucesso!\nEndereço: ${carteira.address}\nChave Privada: ${carteira.privateKey}\nSeed: ${carteira.seed}`);
+      interaction.reply({
+        content: `Sua nova carteira de Bitcoin foi gerada com sucesso!\nEndereço: ${carteira.address}\nChave Privada: ${carteira.privateKey}\nSeed: ${carteira.seed}`,
+        ephemeral: true
+      });
   } catch (error) {
       console.error('Erro ao gerar a carteira:', error);
-      message.reply('Não foi possível gerar a carteira, tente novamente mais tarde.');
+      interaction.reply({
+        content: 'Não foi possível gerar a carteira, tente novamente mais tarde.',
+        ephemeral: true
+      });
   }
 }
 
@@ -66,12 +72,24 @@ client.on("interactionCreate", async interaction => {
 })
 
 
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'create-wallet') {
+    await gerarCarteira(interaction)
+  }
+});
+
 // Lista de commandos de slash
 const commands = [
   {
     name: "hello",
     description: "Replies with Hello World!",
   },
+  {
+    name: "create-wallet",
+    description: "Create your bitcoin wallet"
+  }
 ]
 
 // Sincroniza os comandos de slash com o Discord
