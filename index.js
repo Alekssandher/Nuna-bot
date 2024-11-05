@@ -57,8 +57,7 @@ async function gerarCarteira() {
 // Cria um comando de slash /hello no Discord que responde com "Hello World!"
 client.on("interactionCreate", async interaction => {
   try {
-     
-
+    
       if (!interaction.isChatInputCommand()) return
 
       if (interaction.commandName === "hello") {
@@ -71,7 +70,7 @@ client.on("interactionCreate", async interaction => {
 
         // Responde com o endereço e outras informações, se necessário
         interaction.reply({
-        content: `Your new Bitcoin wallet was sucessfully generated!\nAddress: ${carteira.address}\nPrivate key: ${carteira.privateKey}\nSeed: ${carteira.seed}\n Keep these informations in a secure place, dont share your seed or private key with anyone else.`,
+        content: `Your new Bitcoin wallet was sucessfully generated!\nAddress: ${carteira.address}\nPrivate key: ${carteira.privateKey}\nSeed: ${carteira.seed}\n Keep these information in a secure place, dont share your seed or private key with anyone else.`,
         ephemeral: true
         });
       }
