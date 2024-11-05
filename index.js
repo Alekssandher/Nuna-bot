@@ -38,7 +38,7 @@ client.on("messageCreate", async message => {
   }
 })
 
-async function gerarCarteira(message) {
+async function gerarCarteira(interaction) {
   try {
       // Faz a requisição para a API na Vercel
       const response = await axios.get('https://cripto-wallet.vercel.app/generate-wallet');
@@ -68,17 +68,12 @@ client.on("interactionCreate", async interaction => {
 
     await interaction.reply("Hello world")
 
+  }else if (interaction.commandName === "create-wallet") {
+
+    await gerarCarteira(interaction);
+
   }
 })
-
-
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
-
-  if (interaction.commandName === 'create-wallet') {
-    await gerarCarteira(interaction)
-  }
-});
 
 // Lista de commandos de slash
 const commands = [
