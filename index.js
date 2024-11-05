@@ -32,29 +32,23 @@ client.on("messageCreate", async message => {
     message.reply('Bom dia', message.author.username)
   }
   if (!!message.content && message.content.toLowerCase() === 'gerar carteira'){
-    gerarCarteira(message)
-
-
+    message.reply("Try /create-wallet instead" )
   }
 })
 
-async function gerarCarteira(interaction) {
+async function gerarCarteira() {
   try {
       // Faz a requisição para a API na Vercel
       const response = await axios.get('https://cripto-wallet.vercel.app/generate-wallet');
       
       // Extrai as informações da carteira
       const carteira = response.data; // Aqui, `carteira` é um objeto JSON
+      return carteira
 
-      // Responde com o endereço e outras informações, se necessário
-      interaction.reply({
-        content: `Sua nova carteira de Bitcoin foi gerada com sucesso!\nEndereço: ${carteira.address}\nChave Privada: ${carteira.privateKey}\nSeed: ${carteira.seed}`,
-        ephemeral: true
-      });
   } catch (error) {
-      console.error('Erro ao gerar a carteira:', error);
+      console.error('Error generating wallet:', error);
       interaction.reply({
-        content: 'Não foi possível gerar a carteira, tente novamente mais tarde.',
+        content: "We couldn't generate your wallet, try again later.",
         ephemeral: true
       });
   }
@@ -62,17 +56,29 @@ async function gerarCarteira(interaction) {
 
 // Cria um comando de slash /hello no Discord que responde com "Hello World!"
 client.on("interactionCreate", async interaction => {
-  if (!interaction.isChatInputCommand()) return
+  try {
+     
 
-  if (interaction.commandName === "hello") {
+      if (!interaction.isChatInputCommand()) return
 
-    await interaction.reply("Hello world")
+      if (interaction.commandName === "hello") {
 
-  }
-  if (interaction.commandName === "create-wallet") {
+        await interaction.reply("Hello world")
 
-    await gerarCarteira(interaction);
+      }
+      if (interaction.commandName === "create-wallet"){
+        const carteira = gerarCarteira()
 
+        // Responde com o endereço e outras informações, se necessário
+        interaction.reply({
+        content: `Your new Bitcoin wallet was sucessfully generated!\nAddress: ${carteira.address}\nPrivate key: ${carteira.privateKey}\nSeed: ${carteira.seed}\n Keep these informations in a secure place, dont share your seed or private key with anyone else.`,
+        ephemeral: true
+        });
+      }
+
+  }catch(error){
+
+      console.log(`deu erro: ${error}`)
   }
 
 })
