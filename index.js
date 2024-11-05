@@ -68,11 +68,13 @@ client.on("interactionCreate", async interaction => {
 
     await interaction.reply("Hello world")
 
-  }else if (interaction.commandName === "create-wallet") {
+  }
+  if (interaction.commandName === "create-wallet") {
 
     await gerarCarteira(interaction);
 
   }
+
 })
 
 // Lista de commandos de slash
